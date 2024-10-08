@@ -1,23 +1,22 @@
 {
-  "name": "03-logging",
+  "name": "01-cors",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "Grypis <grypisnecros@gmail.com>",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "pino-http": "^10.3.0",
-    "pino-pretty": "^11.2.2"
+    "serve": "^14.2.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
-  },
-  "description": ""
+  }
 }
