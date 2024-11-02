@@ -7,6 +7,8 @@ import {
   loginController,
   logoutController,
   refreshController,
+  requestResetPasswordController,
+  resetPasswordSchema,
   resetPasswordController,
 } from '../controllers/auth.js';
 
@@ -38,6 +40,13 @@ authRoutes.post(
 authRoutes.post('/logout', ctrlWrapper(logoutController));
 
 authRoutes.post('/refresh', ctrlWrapper(refreshController));
+
+authRoutes.post(
+  '/request-reset-password',
+  jsonParser,
+  validateBody(requestResetPasswordSchema),
+  ctrlWrapper(requestResetPasswordController),
+);
 
 authRoutes.post(
   '/reset-password',

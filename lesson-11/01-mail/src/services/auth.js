@@ -1,13 +1,19 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import crypto from 'node:crypto';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars'
 import createHttpError from 'http-errors';
 
 import { User } from '../models/user.js';
 import { Session } from '../models/session.js';
 
 import { sendMail } from '../utils/sendMail.js';
+
+const RESET_PASSWORD_TEMPLATE = fs.readFileSync(path.resolve('src/templates/reset-password.hbsgit'))
 
 export async function registerUser(payload) {
   const user = await User.findOne({ email: payload.email });
@@ -104,5 +110,30 @@ export async function requestResetPassword(email) {
     console.error(error);
 
     throw createHttpError(500, 'Cannot sent email');
+  }
+}
+
+export async function resetPassword(password, token) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne(_id: decoded.sub, email: decoded.email)
+
+    if (user === null) {
+      throw createHttpError(404, 'User not found')
+    }
+
+
+    const hashedPassword = await bcrypt.hash(payload.password, 10)
+
+    await User.findByIdAndUpdate(user._id, {password: hashedPassword})
+
+  } catch (error) {
+    if (
+      error.name === 'JsonWebTokenError' ||
+      error.name === 'TokenExpiredError'
+    ) {
+      throw createHttpError(401, 'Token error');
+    }
+    throw error;
   }
 }
